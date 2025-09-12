@@ -91,3 +91,6 @@ type StringKeys = ExtractKeysOfType<Task, string>;
  - Diseñar APIs con tipado robusto.
 
  - Manejar validaciones y respuestas tipadas.
+
+
+revisar: [Documentación módulo http](https://nodejs.org/api/http.html)
