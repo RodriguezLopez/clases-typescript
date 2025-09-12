@@ -1,6 +1,6 @@
 # 💡 Ejercicio: API de Gestión de Tareas Tipada en TypeScript
 
-### Vas a construir una pequeña API de gestión de tareas (To-Do) usando Node.js con el módulo http. La API debe exponer endpoints para crear, listar, actualizar y eliminar tareas, todo en memoria (sin base de datos).
+#### Vas a construir una pequeña API de gestión de tareas (To-Do) usando Node.js con el módulo http. La API debe exponer endpoints para crear, listar, actualizar y eliminar tareas, todo en memoria (sin base de datos).
 
 **El reto está en:**
 1. Definir tipos robustos en TypeScript.
