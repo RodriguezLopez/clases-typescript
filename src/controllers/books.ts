@@ -26,6 +26,11 @@ const getBooks = (req: Request, res: Response) => {
 
 const deleteBooks = (req: Request, res: Response) => {  
     try {
+         console.log("Entra", req)
+        getBooksService().then((response)=>{
+            console.log(response)
+            res.send(response)
+        })
 
     }catch(err){
         
