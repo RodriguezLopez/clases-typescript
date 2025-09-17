@@ -1,16 +1,18 @@
-import { Router, type Request, type Response } from 'express'
-import { createBook, getBook, getBooks } from '../controllers/books.ts'
+import { Router } from "express";
+import {
+  getBookController,
+  getBooksController,
+  createBookController,
+  deleteBookController,
+  updateBookController
+} from "../controllers/books.js";
 
-const router:Router = Router()
-/**
- * http://localhost:3002/books
- */
+const router = Router();
 
-router.get("/", (req:Request, res:Response)=> {
-    console.log("vamos ok")
-    getBooks(req, res)
-})
-router.get('/:id', getBook)
-router.post('/', createBook)
+router.get("/", getBooksController);
+router.get("/:id", getBookController);
+router.post("/", createBookController);
+router.delete("/:id", deleteBookController);
+router.put("/:id", updateBookController);
 
-export { router }
+export default router;

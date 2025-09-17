@@ -1,26 +1,18 @@
-import { Router } from 'express'
-import { readdirSync } from 'fs'
-import { fileURLToPath } from "url"
-import { dirname, join } from "path"
+import express from 'express'
+import type { Application } from 'express'
+import { router, initRoutes } from './routes/index'
 
-const __filename = fileURLToPath(import.meta.url)
-const __dirname = dirname(__filename)
-const PATH_ROUTER = join(__dirname)
+const app: Application = express()
+const PORT = 3000
 
-const router:Router = Router()
+// Middleware para parsear JSON
+app.use(express.json())
 
-const cleanFileName = (fileName: string) => { 
-    return fileName.split('.').shift()
-}
+// Inicializar las rutas dinámicas
+await initRoutes()
+app.use('/api', router)
 
-export async function initRoutes() {
-  for (const fileName of readdirSync(PATH_ROUTER)) {
-    const cleanName = cleanFileName(fileName)
-    if (cleanName !== 'index') {
-      const moduleRouter = await import(`./${cleanName}.ts`)
-      router.use(`/${cleanName}`, moduleRouter.router)
-    }
-  }
-}
-
-export { router }
+// Iniciar servidor
+app.listen(PORT, () => {
+  console.log(`🚀 Servidor corriendo en http://localhost:${PORT}`)
+})

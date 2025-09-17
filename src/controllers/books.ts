@@ -1,56 +1,89 @@
-import { type Request, type Response } from 'express';
-import { handleHttp } from '../utils/error.handler.ts'
-import { type HttpErrorStatus } from '../types/types.ts'
-import { getBooks as getBooksService } from '../services/book.service.ts';
+import type { RequestHandler } from "express";
 
-const getBook = (req: Request, res: Response) => {  
-    const statusCode: HttpErrorStatus = 500
-    try {
-        
-    }catch(err){
-        handleHttp(res, "Something crashed your app", statusCode, err)
-    }
+export const getBooksController: RequestHandler = async (req, res) => {
+  try {
+    const response = await getBooks();
+    res.json(response);
+  } catch (err) {
+    res.status(500).json({ error: "Something crashed your app" });
+  }
+};
+
+export const getBookController: RequestHandler = async (req, res) => {
+  const { id } = req.params;
+  if (!id) return res.status(400).json({ message: "Id is required" });
+
+  try {
+    const response = await getBook(id);
+    if (!response) return res.status(404).json({ message: "Book not found" });
+    res.json(response);
+  } catch (err) {
+    res.status(500).json({ error: "Something crashed your app" });
+  }
+};
+
+export const createBookController: RequestHandler = async (req, res) => {
+  try {
+    const response = await createBook(req.body);
+    res.status(201).json(response);
+  } catch (err) {
+    res.status(500).json({ error: "Something crashed your app" });
+  }
+};
+
+export const deleteBookController: RequestHandler = async (req, res) => {
+  const { id } = req.params;
+  if (!id) return res.status(400).json({ message: "Id is required" });
+
+  try {
+    const response = await deleteBook(id);
+    res.json(response);
+  } catch (err) {
+    res.status(500).json({ error: "Something crashed your app" });
+  }
+};
+
+export const updateBookController: RequestHandler = async (req, res) => {
+  const { id } = req.params;
+  if (!id) return res.status(400).json({ message: "Id is required" });
+
+  try {
+    const response = await updateBook(id, req.body);
+    res.json(response);
+  } catch (err) {
+    res.status(500).json({ error: "Something crashed your app" });
+  }
+};
+
+// Example implementation: replace with your actual logic and Book type
+async function getBooks(): Promise<any[]> {
+    // Simulate fetching all books
+    return [
+        { id: "1", title: "Book One" },
+        { id: "2", title: "Book Two" }
+    ];
 }
 
-const getBooks = (req: Request, res: Response) => {  
-    try {
-        console.log("Entra", req)
-        getBooksService().then((response)=>{
-            console.log(response)
-            res.send(response)
-        })
-    }catch(err){
-        
-    }
+async function deleteBook(id: string): Promise<any | null> {
+    // Simulate deleting a book by id
+    // Return deleted book or null if not found
+    return { id, deleted: true };
 }
 
-const deleteBooks = (req: Request, res: Response) => {  
-    try {
-         console.log("Entra", req)
-        getBooksService().then((response)=>{
-            console.log(response)
-            res.send(response)
-        })
-
-    }catch(err){
-        
-    }
+async function updateBook(id: string, data: any): Promise<any | null> {
+    // Simulate updating a book by id
+    // Return updated book or null if not found
+    return { id, ...data };
 }
 
-const createBook = (req: Request, res: Response) => {  
-    try {
-
-    }catch(err){
-        
-    }
+async function getBook(id: string): Promise<any | null> {
+    // Simulate fetching a book by id
+    // Return null if not found
+    return null;
 }
 
-const updateBooks = (req: Request, res: Response) => {  
-    try {
-
-    }catch(err){
-        
-    }
+async function createBook(data: any): Promise<any> {
+    // Simulate creating a book
+    return { id: String(Date.now()), ...data };
 }
 
-export { getBook, getBooks, deleteBooks, createBook, updateBooks}
